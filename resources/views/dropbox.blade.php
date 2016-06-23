@@ -21,14 +21,34 @@
 
         <a href="http://localhost:8000/download">Download File</a>
 
+        <hr/>
+
     <div class="row">
 
         <div class="col-sm-12">
-            <pre>
-            <?php
-                print_r ($data);
-            ?>
-            </pre>
+
+            @if(Session::has('msg_success'))
+                <div class="alert alert-success alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    {{ session::get('msg_success') }}
+                </div>
+            @endif
+
+            @if(Session::has('msg_danger'))
+                <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span></button>
+                    {{ session::get('msg_danger') }}
+                </div>
+            @endif
+
+
+            @for($i=0; $i<$count; $i++)
+
+                <a href="{{route('download')}}?fileName={{urlencode($metadata['contents'][$i]['path'])}}" class="btn" onclick="download();return false;" >{{$metadata['contents'][$i]['path']}}</a>
+
+            @endfor
 
         </div>
     </div>
