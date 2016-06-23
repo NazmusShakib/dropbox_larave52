@@ -49,6 +49,8 @@ class DropCtrl extends Controller
                 //$metadata = $this->client->createFolder("/foo");
                 $metadata = $this->client->getMetadataWithChildren('/');
 
+                //dd($metadata);
+
                 $count =  sizeof($metadata['contents']);
                 
                 return view('dropbox',['count'=>$count,'metadata'=>$metadata]);
@@ -81,33 +83,40 @@ class DropCtrl extends Controller
             exit();
         }
     }
-/*
-    public function download(Request $request){
 
-        dd($request->file);
+    public function download(Request $request){
         
-        $user = DB::table('users')->where('id', 1)->first();
-        $this->client = new Drop\Client($user->dropbox_token, 'Knowmadic/1.0', 'UTF-8');
-
-        $fd = fopen("./dropFiles".$request->file, "wb");
-        $metadata = $this->client->getFile($request->file, $fd);
-
-        //return redirect()->back()->with('status','Download  successfully');
-
-    }*///="/java(star6).txt"
-    public function download(Request $request){
         $fileName = $request->fileName;
-        //echo $fileName;
-        //exit;
+
+        $ex = explode('/',$fileName);
+
+        $aa = sizeof($ex);
 
         $user = DB::table('users')->where('id', 1)->first();
         $this->client = new Drop\Client($user->dropbox_token, 'Knowmadic/1.0', 'UTF-8');
 
-        $fd = fopen("./dropFiles".$fileName, "wb");
-        $metadata = $this->client->getFile($fileName, $fd);
-
+        $fd = fopen("./dropFiles/".$ex[$aa-1], "wb");
+        $this->client->getFile($fileName, $fd);
+        //fclose($fd);
+        
         return redirect()->back()->with('msg_success','Download  successfully');
+    }
+    
+    public function expand(Request $request){
 
+        $folderName = $request->fileName;
+
+        $user = DB::table('users')->where('id', 1)->first();
+        $this->client = new Drop\Client($user->dropbox_token, 'Knowmadic/1.0', 'UTF-8');
+
+        $metadata = $this->client->getMetadataWithChildren($folderName);
+
+        $count =  sizeof($metadata['contents']);
+        //echo $count;
+
+        return view('dropbox',['count'=>$count,'metadata'=>$metadata]);
+
+        dd($metadata);
     }
 
 

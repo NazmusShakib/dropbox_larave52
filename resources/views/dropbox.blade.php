@@ -46,7 +46,19 @@
 
             @for($i=0; $i<$count; $i++)
 
-                <a href="{{route('download')}}?fileName={{urlencode($metadata['contents'][$i]['path'])}}" class="btn" onclick="download();return false;" >{{$metadata['contents'][$i]['path']}}</a>
+                @if($metadata['contents'][$i]['is_dir']== true)
+                    Folder:++
+                    <a href="{{route('expand')}}?fileName={{urlencode($metadata['contents'][$i]['path'])}}" class="btn">
+                    {{$metadata['contents'][$i]['path']}}
+                    </a>
+                    <br/>
+                @else
+                    File:
+                    <a href="{{route('download')}}?fileName={{urlencode($metadata['contents'][$i]['path'])}}" class="btn">
+                     {{$metadata['contents'][$i]['path']}}
+                    </a>
+                    <br/>
+                @endif
 
             @endfor
 

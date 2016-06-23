@@ -25,6 +25,7 @@ Route::get('info', 'DropCtrl@view_details');
 
 
 Route::get('download',array('uses'=>'DropCtrl@download','as'=>'download'));
+Route::get('expand',array('uses'=>'DropCtrl@expand','as'=>'expand'));
 
 /*Route::post('download', [
     'as' => 'download', 'uses' => 'DropCtrl@download'
